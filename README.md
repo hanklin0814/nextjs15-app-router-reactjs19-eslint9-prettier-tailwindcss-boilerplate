@@ -30,6 +30,11 @@ NEXT
 │ │  ├── loading.tsx // dashboard 區塊專用，資料載入中顯示
 │ │  └── page.tsx // dashboard 首頁 (URL: /dashboard)
 │ │
+│ ├── search/ // Search 區塊
+│ │  ├── error.tsx // 當 SearchPage 發生錯誤時，此錯誤邊界組件會顯示錯誤訊息與重試按鈕。注意此組件必須是 Client Component（使用 'use client';）
+│ │  ├── loading.tsx // 當 SearchPage 內的資料還在載入時，會顯示此 Loading 頁面
+│ │  └── page.tsx // SearchPage，為 Server Component，會根據 URL 中的查詢參數（例如 ?q=xxx）取得搜尋關鍵字，並透過 Suspense 包裹搜尋結果組件
+│ │
 │ ├── todo/ // Todo 區塊
 │ │  ├── layout.tsx // todo 區塊專用
 │ │  └── page.tsx // todo 首頁 (URL: /todo)
@@ -50,7 +55,9 @@ NEXT
 ├── components/ // 全局共享的 UI 組件 (不屬於路由層級)
 │ ├── CommonLayout.tsx
 │ ├── Modal.tsx
-│ └── Navigation.tsx
+│ ├── Navigation.tsx
+│ ├── SearchInput.tsx // Client Component，使用 useTransition 處理 URL 更新（利用 router.push 進行輕量級過渡）
+│ └── SearchResults.tsx // Server Component，用於抓取搜尋結果資料。利用內建 fetch 搭配 revalidate 與 Suspense 實現資料流式呈現
 │
 ├── config/ // 全局配置檔案
 │ ├── app.config.ts // 例如主題、預設導航項目等設定
@@ -218,3 +225,20 @@ Context.tsx -> layout.tsx -> page.tsx
 
 - ##### page.tsx
   client component，能夠使用`useContext`等 hook，將取得的資料進行加工或渲染畫面。
+
+---
+
+### 增加 SearchPage 範例
+展示 Next.js 15 與 React 19 新功能的組合應用，利用文件式路由、嵌套路由、Suspense、ISR 以及 React 的 Concurrent 功能（`useTransition`）來構建一個現代化、靈活且高效的單頁應用。
+
+- ##### 後端資料抓取與 ISR：
+在 Server Component（如 SearchResults）中使用內建 fetch 搭配 next: { revalidate: 10 }，實現資料快取與自動更新。
+
+- ##### 文件式與嵌套路由：
+根 layout（app/layout.tsx）提供全局結構與主題，子路由（app/search/）則擁有專屬的 loading 與 error 處理，達到更細粒度的用戶體驗控制。
+
+- ##### 客戶端交互與過渡：
+SearchInput 利用 useTransition 實現輕量級 URL 更新，讓使用者在輸入搜尋關鍵字時能順暢切換頁面並刷新搜尋結果。
+
+- ##### API-first 架構：
+雖然此範例使用 JSONPlaceholder 作為假資料來源，但可擴充為與真正的 REST API 整合，前後端分離，易於擴展與維護。

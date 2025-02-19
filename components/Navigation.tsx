@@ -15,6 +15,10 @@ const navItem = [
     href: ROUTES.BLOG,
   },
   {
+    label: 'Search',
+    href: ROUTES.SEARCH,
+  },
+  {
     label: 'Dashboard',
     href: ROUTES.DASHBOARD,
   },
