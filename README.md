@@ -17,12 +17,37 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## 專案資料夾結構說明及範例
 
-### Next Boilerplate Template For Scaffolding Project Starter
+### Next.js 15 + React 19 + Drizzle + PostgreSQL in Docker Boilerplate
+這是一個基於 Next.js (App Router 與 ISR 範例)、React 19、Tailwind CSS、ESLint 9、Drizzle ORM 與 PostgreSQL (運行於 Docker) 的專案啟動模板，搭配自定義 hooks 與清晰的資料夾結構，可作為現代前後端整合專案的起點。
 
-> 使用 nextjs-15 (App Router, ISR example), react-19, tailwindcss, eslint9
+#### 主要套件與技術說明
+
+**React 19**
+> 支援最新的 Concurrent 與 Transition 特性，讓使用者互動更流暢。
+
+**Tailwind CSS**
+> 以實用性為導向的 CSS 框架，幫助快速建立現代化 UI。
+
+**Drizzle ORM**
+> 輕量化的 TypeScript ORM，搭配 PostgreSQL 操作資料庫，提供直覺且類型安全的 API。
+
+**PostgreSQL in Docker**
+> 利用 Docker Compose 啟動 PostgreSQL 與 pgAdmin，確保本地開發環境一致性。
+
+**ESLint 與 Prettier**
+> 統一程式碼風格與質量檢查，維持團隊程式碼一致性。
+
+**自定義 Hooks (useTodos)**
+> 將 Todo 相關的 API 操作與狀態管理封裝成自訂 hook，使前端頁面更加精簡與易於維護。
+
+**Docker Compose 使用說明**
+> 在與 docker-compose.yml 同一目錄下，執行以下指令以啟動 PostgreSQL 與 pgAdmin 兩個服務：
 
 NEXT
 ├── app/
+│ ├── api/ // API 資料夾
+│ │  └── todos/ // todos 功能資料夾
+│ │     └── route.ts // REST API 路由，使用 Drizzle ORM 操作 PostgreSQL
 │ ├── dashboard/ // Dashboard 區塊 (例如後台/專區)
 │ │  └── settings/ // dashboard nested 區塊
 │ │  │  └── page.tsx // settings 首頁 (URL: /dashboard/settings)
@@ -59,7 +84,7 @@ NEXT
 │ ├── SearchInput.tsx // Client Component，使用 useTransition 處理 URL 更新（利用 router.push 進行輕量級過渡）
 │ └── SearchResults.tsx // Server Component，用於抓取搜尋結果資料。利用內建 fetch 搭配 revalidate 與 Suspense 實現資料流式呈現
 │
-├── config/ // 全局配置檔案
+├── config/ // 全局配置 (主題、環境參數等)
 │ ├── app.config.ts // 例如主題、預設導航項目等設定
 │ └── env.config.ts // 環境變數與其他配置
 │
@@ -72,10 +97,14 @@ NEXT
 │ ├── routes.ts
 │ └── theme.ts
 │
-├── context/ // React Context，用來管理全局狀態 (如 auth, theme)
+├── context/ // React Context，用於全局狀態管理
 │ ├── ModalContext.tsx
 │ ├── UserContext.tsx
 │ └── WebsiteContext.tsx
+│
+├── drizzle/ // Drizzle ORM 連線設定與資料庫 schema
+│ ├── db.ts // Drizzle ORM 與 PostgreSQL 的連線
+│ └── schema.ts // Drizzle ORM 資料庫 schema 定義
 │
 ├── enums/ // 常用列舉定義
 │ ├── enums.ts
@@ -87,7 +116,8 @@ NEXT
 │ ├── useAuth.ts
 │ ├── useDebounce.ts
 │ ├── useDebounceFn.ts
-│ └── useToast.ts
+│ ├── useToast.ts
+│ └── useTodos.ts
 │
 ├── lib/ // 與外部服務或後端邏輯相關的功能封裝
 │ ├── api.ts // API 請求封裝
@@ -104,9 +134,15 @@ NEXT
 │ ├── images/
 │ └── favicon.ico
 │
+├── pgadmin/ // pgAdmin 設定檔
+│ └── pgdb_servers.json //用途是給 pgAdmin docker 啟動時設置環境用
+│
 ├── services/ // 業務邏輯服務層 (封裝用戶、產品等相關操作)
 │ ├── userService.ts
 │ └── productService.ts
+│
+├── sql/ // Docker 初始化 SQL 腳本 (自動建立資料庫與表格)
+│ └── initdb.sql //這用檔案的用途是給 postgres docker 啟動時透過 volumn 指令掛戴將此 SQL 檔案映射到 docker 內的 /docker-entrypoint-initdb.d/init.sql 檔，使得 docker initial 時會自動建立一個名為 pg_testdb 的資料庫
 │
 ├── styles/ // 全局樣式 (CSS、SCSS 或 Tailwind CSS)
 │ └── globals.css
@@ -130,10 +166,11 @@ NEXT
 │ └── product.d.ts
 │
 ├── utils/ // 工具函數與輔助程式
-│ ├── formatDate.ts
-│ └── validateEmail.ts
+│ ├── fetcher.ts //抽離 fetch 請求為通用函數，確保錯誤處理一致
+│ └── general.ts //常用共用的輔助程式
 │
 ├── .env // 環境變數設定檔
+├── docker-compose.yml // Docker Compose 設定檔 (啟動 PostgreSQL 與 pgAdmin)
 ├── package.json
 ├── tsconfig.json
 ├── next.config.js
@@ -242,3 +279,13 @@ SearchInput 利用 useTransition 實現輕量級 URL 更新，讓使用者在輸
 
 - ##### API-first 架構：
 雖然此範例使用 JSONPlaceholder 作為假資料來源，但可擴充為與真正的 REST API 整合，前後端分離，易於擴展與維護。
+
+---
+
+### Docker Compose 使用說明
+在與 docker-compose.yml 同一目錄下，執行以下指令以啟動 PostgreSQL 與 pgAdmin 兩個服務：
+`docker compose up -d`
+啟動成功後，可在另一個終端機視窗中執行以下指令檢查容器啟動狀況：
+`docker ps`
+這樣即可確認 pg_server (PostgreSQL) 與 pg_admin (pgAdmin) 已成功運行。
+進一步，透過瀏覽器存取 http://localhost:5431 可使用 pgAdmin 進行資料庫管理。

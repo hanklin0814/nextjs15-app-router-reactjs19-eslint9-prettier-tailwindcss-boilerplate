@@ -3,3 +3,7 @@ export const API = {
   POSTS: 'https://jsonplaceholder.typicode.com/posts',
   TODOS: 'https://jsonplaceholder.typicode.com/todos',
 };
+
+export const NEXT_API = {
+  TODOS: '/api/todos',
+};
