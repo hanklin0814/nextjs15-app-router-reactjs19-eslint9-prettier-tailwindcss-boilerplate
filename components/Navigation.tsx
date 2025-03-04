@@ -32,7 +32,7 @@ export default function Navigation() {
   const pathname = usePathname();
 
   return (
-    <div className="flex space-x-4 mb-4">
+    <div className="flex space-x-4">
       {navItem.map((item, index) => (
         <Link
           key={index}

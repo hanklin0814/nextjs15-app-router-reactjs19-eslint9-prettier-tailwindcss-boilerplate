@@ -78,7 +78,7 @@ NEXT
 │ └── Providers.tsx // 全站共用 Providers，Providers 與其內部的 Context Provider 皆為 Client Component，能夠使用 useState、useContext 等客戶端 hook
 │
 ├── components/ // 全局共享的 UI 組件 (不屬於路由層級)
-│ ├── CommonLayout.tsx
+│ ├── Slider.tsx
 │ ├── Modal.tsx
 │ ├── Navigation.tsx
 │ ├── SearchInput.tsx // Client Component，使用 useTransition 處理 URL 更新（利用 router.push 進行輕量級過渡）

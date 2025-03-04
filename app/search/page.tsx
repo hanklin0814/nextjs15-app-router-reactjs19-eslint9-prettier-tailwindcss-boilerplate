@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import CommonLayout from '@/components/CommonLayout';
+import Slider from '@/components/Slider';
 import Navigation from '@/components/Navigation';
 import SearchInput from '@/components/SearchInput';
 import SearchResults from '@/components/SearchResults';
@@ -16,7 +16,7 @@ export default async function SearchPage({
   return (
     <div className="p-4">
       <Navigation />
-      <CommonLayout />
+      <Slider />
       <h2 className="text-2xl font-bold mb-4">Search Page</h2>
 
       {/* 搜尋輸入框為 Client Component，可即時更新 URL */}

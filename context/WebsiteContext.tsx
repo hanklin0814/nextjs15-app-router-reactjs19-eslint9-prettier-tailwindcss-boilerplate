@@ -1,11 +1,20 @@
 'use client';
 import { createContext, useContext } from 'react';
 
-import { LAYOUT_TYPE, THEME_TYPE } from '@/constants';
-
+// export interface WebConfig {
+//   device: string;
+//   theme: string;
+//   layoutType: string;
+// }
 export interface WebConfig {
-  theme: THEME_TYPE;
-  layoutType: LAYOUT_TYPE;
+  desktop: {
+    theme: string;
+    layout: string;
+  };
+  mobile: {
+    theme: string;
+    layout: string;
+  };
 }
 
 interface WebsiteContextType {

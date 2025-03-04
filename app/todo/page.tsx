@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
 
-import CommonLayout from '@/components/CommonLayout';
 import Navigation from '@/components/Navigation';
+import Slider from '@/components/Slider';
 import { useTodos } from '@/hooks/useTodos';
 
 export default function TodoPage() {
@@ -18,7 +18,7 @@ export default function TodoPage() {
   return (
     <div className="p-4">
       <Navigation />
-      <CommonLayout />
+      <Slider />
       <h2 className="text-2xl font-bold mb-4">TODO App</h2>
       <div className="flex mt-4">
         <input

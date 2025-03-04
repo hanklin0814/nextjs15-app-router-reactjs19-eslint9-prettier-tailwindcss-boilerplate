@@ -2,7 +2,7 @@
 import axios, { HttpStatusCode } from 'axios';
 import { useEffect, useState } from 'react';
 
-import CommonLayout from '@/components/CommonLayout';
+import Slider from '@/components/Slider';
 import Navigation from '@/components/Navigation';
 import { API } from '@/constants';
 
@@ -25,7 +25,7 @@ export default function DashboardPage() {
   return (
     <div className="p-4">
       <Navigation />
-      <CommonLayout />
+      <Slider />
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <p className="text-lg mb-4">client component 用 axios 拉取資料</p>
       <div className="space-y-4">

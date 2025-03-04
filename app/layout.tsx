@@ -3,8 +3,10 @@ import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import { getConfig } from '@/config/getSetting';
 import { API } from '@/constants';
-import { LAYOUT, THEME } from '@/constants';
+import { Todo, User } from '@/context/CommonContext';
+import { WebConfig } from '@/context/WebsiteContext';
 
 import Providers from './Providers';
 
@@ -23,7 +25,7 @@ export const metadata: Metadata = {
   description: 'Next Boilerplate Template For Scaffolding Project',
 };
 
-async function getUserList() {
+async function getUserList(): Promise<User[]> {
   const response = await fetch(API.USERS, {
     next: { revalidate: 60 },
     cache: 'force-cache',
@@ -33,7 +35,7 @@ async function getUserList() {
   return await response.json();
 }
 
-async function getTodo() {
+async function getTodo(): Promise<Todo[]> {
   const response = await fetch(API.TODOS, {
     next: { revalidate: 60 },
     cache: 'force-cache',
@@ -50,22 +52,20 @@ export default async function RootLayout({
 }) {
   const users = await getUserList();
   const todo = await getTodo();
+  const { config } = await getConfig(); // 直連 DB 取得
 
-  // 假設這個值是從外部取得，例如讀取配置或 API
-  const webConfig = {
-    theme: THEME.DARK,
-    layoutType: LAYOUT.TYPE_A, // 後台設置後，由 fetch API 取得後注入點
-  };
+  console.log('server component', { config });
 
   return (
     <html lang="en">
       <head>
         <title>Next.js App</title>
+        <link rel="icon" href="/logo.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased ${webConfig.theme}`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers webConfig={webConfig} users={users} todo={todo}>
+        <Providers webConfig={config as WebConfig} users={users} todo={todo}>
           {children}
         </Providers>
       </body>

@@ -6,4 +6,5 @@ export const API = {
 
 export const NEXT_API = {
   TODOS: '/api/todos',
+  SETTING: 'http://localhost:3000/api/setting',
 };
