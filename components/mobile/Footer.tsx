@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import { MessageKeys, useTranslations } from 'next-intl';
 import {
   SlBell,
@@ -58,12 +59,16 @@ export default function Footer() {
         {footerItem.map((item, index) => (
           <li key={index} className="relative">
             <div
-              className={classNames(
-                item.isMain
-                  ? 'bg-gray-500 rounded-full p-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-                  : '',
-                'flex justify-center'
-              )}
+              // className={classNames(
+              //   item.isMain
+              //     ? 'bg-gray-500 rounded-full p-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+              //     : '',
+              //   'flex justify-center'
+              // )}
+              className={clsx('flex justify-center', {
+                'bg-gray-500 rounded-full p-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2':
+                  item.isMain,
+              })}
             >
               {item.icon}
             </div>

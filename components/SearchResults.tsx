@@ -1,3 +1,5 @@
+import { fetcher } from '@/utils/fetcher';
+
 interface Post {
   body: string;
   id: number;
@@ -6,15 +8,23 @@ interface Post {
 }
 
 export default async function SearchResults({ query }: { query: string }) {
+  // 模擬 API
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   // 根據 query 呼叫 API 取得搜尋結果，若 query 為空則返回空陣列
-  const res = await fetch(
+  const results = await fetcher(
     `https://jsonplaceholder.typicode.com/posts?q=${query}`,
     {
       next: { revalidate: 10 },
     }
   );
-  if (!res.ok) throw new Error('Failed to fetch search results');
-  const results = await res.json();
+  // const res = await fetch(
+  //   `https://jsonplaceholder.typicode.com/posts?q=${query}`,
+  //   {
+  //     next: { revalidate: 10 },
+  //   }
+  // );
+  // if (!res.ok) throw new Error('Failed to fetch search results');
+  // const results = await res.json();
 
   return (
     <ul className="mt-4">
