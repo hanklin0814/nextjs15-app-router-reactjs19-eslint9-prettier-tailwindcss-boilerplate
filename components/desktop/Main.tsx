@@ -1,4 +1,6 @@
 'use client';
+import { useTranslations } from 'next-intl';
+
 import { useContextData } from '@/context/CommonContext';
 import { useModal } from '@/context/ModalContext';
 import { useWebsiteConfig } from '@/context/WebsiteContext';
@@ -7,15 +9,16 @@ export default function Main() {
   const { openModal } = useModal();
   const { users } = useContextData();
   const { webConfig } = useWebsiteConfig();
+  const t = useTranslations();
 
   return (
     <main className="border border-blue-500 flex flex-col gap-4 flex-[1_1_auto] p-4">
-      <h1 className="text-xl font-bold">User List</h1>
+      <h1 className="text-xl font-bold">{t('section.userList')}</h1>
       <button
         className="bg-green-500 p-2 hover:bg-green-800 w-32"
         onClick={openModal}
       >
-        Open Modal
+        {t('modal.action')}
       </button>
       <ul>
         {users.map((user) => (

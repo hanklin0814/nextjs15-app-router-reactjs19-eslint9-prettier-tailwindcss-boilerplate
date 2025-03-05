@@ -1,3 +1,5 @@
+import Header from '@/components/Header';
+
 export default async function TodoLayout({
   children,
 }: {
@@ -5,8 +7,8 @@ export default async function TodoLayout({
 }) {
   return (
     <div className="min-h-screen">
+      <Header />
       {children}
-      <div className="">這裡是 TodoLayout 的 footer</div>
     </div>
   );
 }

@@ -1,17 +1,19 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
 import { isDesktop } from 'react-device-detect';
 
 export default function Home() {
-  console.log({ isDesktop });
+  const t = useTranslations();
+  const DesktopComponent = dynamic(() => import('@/components/desktop'), {
+    loading: () => <p>{t('global.loading')}</p>,
+    ssr: false,
+  });
 
-  const LayoutComponent = dynamic(
-    () =>
-      isDesktop
-        ? import('@/components/desktop')
-        : import('@/components/mobile'),
-    { ssr: false }
-  );
+  const MobileComponent = dynamic(() => import('@/components/mobile'), {
+    loading: () => <p>{t('global.loading')}</p>,
+    ssr: false,
+  });
 
-  return <LayoutComponent />;
+  return <>{isDesktop ? <DesktopComponent /> : <MobileComponent />}</>;
 }

@@ -27,18 +27,6 @@ export async function getConfig() {
   }
 
   const configResult = result[0];
-  // console.log({ configResult });
-
-  // return {
-  //   desktop: {
-  //     theme: configResult.config,
-  //     layout: configResult.config.layout,
-  //   },
-  //   mobile: {
-  //     theme: configResult.config.theme,
-  //     layout: configResult.config.layout,
-  //   },
-  // };
 
   return configResult;
 }

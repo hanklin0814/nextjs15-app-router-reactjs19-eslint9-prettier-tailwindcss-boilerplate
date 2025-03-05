@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
 
-import Slider from '@/components/Slider';
+import Header from '@/components/Header';
 import Navigation from '@/components/Navigation';
 import SearchInput from '@/components/SearchInput';
 import SearchResults from '@/components/SearchResults';
+import Slider from '@/components/Slider';
 
 export default async function SearchPage({
   searchParams,
@@ -15,6 +16,7 @@ export default async function SearchPage({
 
   return (
     <div className="p-4">
+      <Header />
       <Navigation />
       <Slider />
       <h2 className="text-2xl font-bold mb-4">Search Page</h2>

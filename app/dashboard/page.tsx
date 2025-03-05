@@ -2,8 +2,8 @@
 import axios, { HttpStatusCode } from 'axios';
 import { useEffect, useState } from 'react';
 
-import Slider from '@/components/Slider';
 import Navigation from '@/components/Navigation';
+import Slider from '@/components/Slider';
 import { API } from '@/constants';
 
 export default function DashboardPage() {

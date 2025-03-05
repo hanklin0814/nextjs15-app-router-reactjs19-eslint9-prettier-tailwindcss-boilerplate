@@ -4,6 +4,8 @@
 //     cache: 'force-cache',
 //   });
 
+import Header from '@/components/Header';
+
 //   if (!response.ok) {
 //     throw Error;
 //   }
@@ -20,7 +22,7 @@ export default async function DashboardLayout({
   return (
     <div className="dashboard-container">
       {/* 可放入 Dashboard 專用的 header 或側邊欄 */}
-      <header className="mb-4">這裡是 DashboardLayout 的 header</header>
+      <Header />
       {children}
     </div>
   );

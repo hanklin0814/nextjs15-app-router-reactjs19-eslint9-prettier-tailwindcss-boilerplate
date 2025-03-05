@@ -1,0 +1,47 @@
+{
+  "global": {
+    "loading": "กำลังโหลด...",
+    "error": "ข้อผิดพลาด",
+    "success": "ความสำเร็จ"
+  },
+  "section": {
+    "carousel": "บล็อกภาพหมุน",
+    "announcement": "บล็อกประกาศ",
+    "userList": "รายชื่อผู้ใช้",
+    "searchPage": "หน้าค้นหา"
+  },
+  "navigation": {
+    "home": "หน้าแรก",
+    "blog": "บล็อก",
+    "search": "ค้นหา",
+    "dashboard": "แผงควบคุม",
+    "todo": "สิ่งที่ต้องทำ"
+  },
+  "aside": {
+    "popular": "ยอดนิยม",
+    "electronic": "อิเล็กทรอนิกส์",
+    "live": "สด",
+    "sports": "กีฬา",
+    "eSports": "อีสปอร์ต",
+    "cardGames": "เกมกระดานและไพ่",
+    "fishing": "ตกปลา",
+    "lottery": "ลอตเตอรี่",
+    "arcade": "เกมอาร์เคด"
+  },
+  "modal": {
+    "action": "เปิดโมดัล",
+    "button": {
+      "confirm": "ยืนยัน",
+      "cancel": "ยกเลิก"
+    },
+    "title": "ปิดการใช้งานบัญชี",
+    "description": "คุณแน่ใจหรือไม่ว่าต้องการปิดการใช้งานบัญชีของคุณ? ข้อมูลทั้งหมดของคุณจะถูกลบอย่างถาวร การดำเนินการนี้ไม่สามารถย้อนกลับได้."
+  },
+  "footer": {
+    "promotions": "โปรโมชั่น",
+    "customerService": "บริการลูกค้า",
+    "notification": "",
+    "depositsAndWithdrawals": "การฝากและถอนเงิน",
+    "myAccount": "ของฉัน"
+  }
+}

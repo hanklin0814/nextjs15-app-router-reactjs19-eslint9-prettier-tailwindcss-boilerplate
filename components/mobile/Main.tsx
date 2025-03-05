@@ -1,14 +1,17 @@
 'use client';
+import { useTranslations } from 'next-intl';
+
 import { useContextData } from '@/context/CommonContext';
 import { useWebsiteConfig } from '@/context/WebsiteContext';
 
 export default function Main() {
   const { users } = useContextData();
   const { webConfig } = useWebsiteConfig();
+  const t = useTranslations();
 
   return (
     <main className="border border-blue-500 flex flex-col gap-2 flex-[1_1_auto] p-2">
-      <h1 className="text-xl font-bold">User List</h1>
+      <h1 className="text-xl font-bold">{t('section.userList')}</h1>
       <ul>
         {users.map((user, index) => (
           <li

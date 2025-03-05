@@ -1,11 +1,8 @@
 'use client';
-import Image from 'next/image';
 
 import Announcement from '@/components/Announcement';
-import Navigation from '@/components/Navigation';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import Slider from '@/components/Slider';
-import { useContextData } from '@/context/CommonContext';
-import { useModal } from '@/context/ModalContext';
 import { useWebsiteConfig } from '@/context/WebsiteContext';
 
 import Aside from './Aside';
@@ -20,6 +17,7 @@ export default function Mobile({ children }: { children?: React.ReactNode }) {
       <div className="fixed top-0 right-0 text-stone-100 bg-slate-500 opacity-90">
         isMobile
       </div>
+      <LanguageSwitcher />
       <Slider />
       <Announcement />
       <div className="flex">

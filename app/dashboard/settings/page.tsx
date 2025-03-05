@@ -1,7 +1,7 @@
 'use client';
 
-import Slider from '@/components/Slider';
 import Navigation from '@/components/Navigation';
+import Slider from '@/components/Slider';
 
 export default function SettingsPage() {
   return (

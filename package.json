@@ -12,8 +12,10 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "axios": "^1.7.9",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.39.3",
     "next": "15.1.6",
+    "next-intl": "^3.26.5",
     "pg": "^8.13.3",
     "react": "^19.0.0",
     "react-device-detect": "^2.2.3",

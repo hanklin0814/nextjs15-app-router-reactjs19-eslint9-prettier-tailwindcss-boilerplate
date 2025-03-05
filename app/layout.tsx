@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { cookies } from 'next/headers';
 
 import { getConfig } from '@/config/getSetting';
 import { API } from '@/constants';
@@ -54,10 +55,18 @@ export default async function RootLayout({
   const todo = await getTodo();
   const { config } = await getConfig(); // 直連 DB 取得
 
-  console.log('server component', { config });
+  // 從 cookies 中取得使用者語系，若無則預設 'en'
+  const cookieStore = await cookies();
+  const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+  // const timeZone = cookieStore.get('NEXT_LOCALE')?.value || 'en';
+
+  console.log('server component', { config, locale });
+
+  // 根據 locale 動態載入對應的翻譯檔
+  const messages = (await import(`../locales/${locale}.json`)).default;
 
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <title>Next.js App</title>
         <link rel="icon" href="/logo.png" />
@@ -65,7 +74,13 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers webConfig={config as WebConfig} users={users} todo={todo}>
+        <Providers
+          webConfig={config as WebConfig}
+          users={users}
+          todo={todo}
+          locale={locale}
+          messages={messages}
+        >
           {children}
         </Providers>
       </body>

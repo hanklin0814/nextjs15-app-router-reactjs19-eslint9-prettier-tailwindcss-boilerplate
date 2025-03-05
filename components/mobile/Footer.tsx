@@ -1,5 +1,6 @@
 'use client';
 
+import { MessageKeys, useTranslations } from 'next-intl';
 import {
   SlBell,
   SlDiamond,
@@ -13,26 +14,31 @@ import { classNames } from '@/utils/general';
 
 const footerItem = [
   {
+    key: 'promotions',
     label: '優惠',
     icon: <SlPicture />,
     isMain: false,
   },
   {
+    key: 'customerService',
     label: '客服',
     icon: <SlSupport />,
     isMain: false,
   },
   {
+    key: 'notification',
     label: '',
     icon: <SlBell />,
     isMain: true,
   },
   {
+    key: 'depositsAndWithdrawals',
     label: '存取款',
     icon: <SlDiamond />,
     isMain: false,
   },
   {
+    key: 'myAccount',
     label: '我的',
     icon: <SlEarphonesAlt />,
     isMain: false,
@@ -41,6 +47,7 @@ const footerItem = [
 
 export default function Footer() {
   const { webConfig } = useWebsiteConfig();
+  const t = useTranslations('footer');
 
   return (
     <footer
@@ -60,7 +67,14 @@ export default function Footer() {
             >
               {item.icon}
             </div>
-            <div>{item.label}</div>
+            <div className="text-xs">
+              {t(
+                item.key as MessageKeys<
+                  IntlMessages,
+                  keyof IntlMessages['footer']
+                >
+              )}
+            </div>
           </li>
         ))}
       </ul>

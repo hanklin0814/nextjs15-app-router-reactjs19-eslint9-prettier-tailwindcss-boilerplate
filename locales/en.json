@@ -1,0 +1,47 @@
+{
+  "global": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "section": {
+    "carousel": "Carousel Block",
+    "announcement": "Announcement Block",
+    "userList": "User List",
+    "searchPage": "Search Page"
+  },
+  "navigation": {
+    "home": "Home",
+    "blog": "Blog",
+    "search": "Search",
+    "dashboard": "Dashboard",
+    "todo": "Todo"
+  },
+  "aside": {
+    "popular": "Popular",
+    "electronic": "Electronic",
+    "live": "Live",
+    "sports": "Sports",
+    "eSports": "eSports",
+    "cardGames": "Chess & Card Games",
+    "fishing": "Fishing",
+    "lottery": "Lottery",
+    "arcade": "Arcade"
+  },
+  "modal": {
+    "action": "Open Modal",
+    "button": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "title": "Deactivate account",
+    "description": "Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone."
+  },
+  "footer": {
+    "promotions": "Promotions",
+    "customerService": "Customer Service",
+    "notification": "",
+    "depositsAndWithdrawals": "Deposits and Withdrawals",
+    "myAccount": "My Account"
+  }
+}

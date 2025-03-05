@@ -1,0 +1,47 @@
+{
+  "global": {
+    "loading": "載入中...",
+    "error": "錯誤",
+    "success": "成功"
+  },
+  "section": {
+    "carousel": "輪播圖區塊",
+    "announcement": "公告區塊",
+    "userList": "使用者列表",
+    "searchPage": "搜尋頁面"
+  },
+  "navigation": {
+    "home": "首頁",
+    "blog": "部落格",
+    "search": "搜尋",
+    "dashboard": "儀表板",
+    "todo": "待辦事項"
+  },
+  "aside": {
+    "popular": "熱門",
+    "electronic": "電子",
+    "live": "真人",
+    "sports": "體育",
+    "eSports": "電競",
+    "cardGames": "棋牌",
+    "fishing": "捕魚",
+    "lottery": "彩票",
+    "arcade": "街機"
+  },
+  "modal": {
+    "action": "打開彈窗",
+    "button": {
+      "confirm": "確認",
+      "cancel": "取消"
+    },
+    "title": "停用帳戶",
+    "description": "您確定要停用您的帳戶嗎？所有數據將被永久刪除。此操作無法撤銷。"
+  },
+  "footer": {
+    "promotions": "優惠活動",
+    "customerService": "客戶服務",
+    "notification": "",
+    "depositsAndWithdrawals": "存款與提款",
+    "myAccount": "我的帳戶"
+  }
+}

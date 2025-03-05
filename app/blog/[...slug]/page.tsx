@@ -1,8 +1,8 @@
 'use client';
 import { useParams } from 'next/navigation';
 
-import Slider from '@/components/Slider';
 import Navigation from '@/components/Navigation';
+import Slider from '@/components/Slider';
 
 export default function BlogPost() {
   const { slug } = useParams();
