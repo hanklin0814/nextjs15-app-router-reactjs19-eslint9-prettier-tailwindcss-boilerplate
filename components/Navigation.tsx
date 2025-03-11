@@ -32,6 +32,11 @@ const navItem = [
     label: 'Todo',
     href: ROUTES.TODO,
   },
+  {
+    key: 'protected',
+    label: 'Protected',
+    href: ROUTES.PROTECTED,
+  },
 ];
 
 export default function Navigation() {

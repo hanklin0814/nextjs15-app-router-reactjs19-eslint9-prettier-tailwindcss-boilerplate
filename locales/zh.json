@@ -15,7 +15,8 @@
     "blog": "部落格",
     "search": "搜尋",
     "dashboard": "儀表板",
-    "todo": "待辦事項"
+    "todo": "待辦事項",
+    "protected": "保護"
   },
   "aside": {
     "popular": "熱門",

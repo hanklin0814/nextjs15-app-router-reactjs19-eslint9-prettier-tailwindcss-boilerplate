@@ -5,4 +5,5 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   SETTINGS: '/dashboard/settings',
   TODO: '/todo',
+  PROTECTED: '/protected',
 };

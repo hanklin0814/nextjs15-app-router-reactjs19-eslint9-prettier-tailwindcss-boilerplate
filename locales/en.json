@@ -15,7 +15,8 @@
     "blog": "Blog",
     "search": "Search",
     "dashboard": "Dashboard",
-    "todo": "Todo"
+    "todo": "Todo",
+    "protected": "Protected"
   },
   "aside": {
     "popular": "Popular",
