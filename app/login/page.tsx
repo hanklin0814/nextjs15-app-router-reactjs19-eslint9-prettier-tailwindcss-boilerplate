@@ -1,9 +1,6 @@
-// 使用者輸入帳密，呼叫 /api/login；成功後由後端設定 HttpOnly Cookie，即不需在前端儲存 token：
-// pages/login.tsx
-
 'use client';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 
 // import { fetcher } from '@/utils/fetcher';
 
@@ -11,31 +8,37 @@ export default function Login() {
   const [username, setUsername] = useState<string>('user');
   const [password, setPassword] = useState<string>('password');
   const [error, setError] = useState<string>('');
+  const isSubmittingRef = useRef<boolean>(false);
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (isSubmittingRef.current) return; // 防止重複提交
+
+    isSubmittingRef.current = true;
     setError('');
 
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    console.log({ res });
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (res.ok) {
-      router.push('/dashboard');
-    } else {
-      const data = await res.json();
-      setError(data.message || 'Login failed');
+      if (res.ok) {
+        // 使用 replace 而不是 push 來避免瀏覽歷史堆疊
+        router.replace('/protected');
+      } else {
+        const data = await res.json();
+        setError(data.message || 'Login failed');
+      }
+    } catch (err) {
+      setError('登入時發生錯誤');
+    } finally {
+      isSubmittingRef.current = false;
     }
   };
-
-  // const handleLogout = async () => {
-  //   await fetch('/api/logout', { method: 'POST' });
-  //   router.push('/login');
-  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

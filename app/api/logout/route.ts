@@ -1,43 +1,46 @@
-// app/api/login/route.ts
-import jwt from 'jsonwebtoken';
-// import type { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 
-type Data = {
+interface LogoutResponse {
   message: string;
-};
-
-// export default function handler(
-//   req: NextApiRequest,
-//   res: NextApiResponse<Data>
-// ) {
-//   if (req.method !== 'POST') {
-//     return res.status(405).json({ message: 'Method Not Allowed' });
-//   }
-
-//   // 設定 cookie 過期以清除 token
-//   res.setHeader('Set-Cookie', [
-//     `token=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict`,
-//     `refreshToken=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict`,
-//   ]);
-
-//   return res.status(200).json({ message: 'Logout successful' });
-// }
+  status?: string;
+}
 
 export async function POST(request: NextRequest) {
-  const response = NextResponse.json({ message: 'Logout successful' });
-  // 清除存放在 cookie 中的 token 與 refreshToken
-  response.cookies.set('token', '', {
-    maxAge: 0,
-    path: '/',
-    httpOnly: true,
-    sameSite: 'strict',
-  });
-  response.cookies.set('refreshToken', '', {
-    maxAge: 0,
-    path: '/',
-    httpOnly: true,
-    sameSite: 'strict',
-  });
-  return response;
+  try {
+    // 檢查請求方法
+    if (request.method !== 'POST') {
+      return NextResponse.json(
+        { message: 'Method Not Allowed' },
+        { status: 405 }
+      );
+    }
+
+    const response = NextResponse.json<LogoutResponse>({
+      message: 'Logout successful',
+      status: 'success',
+    });
+
+    // 清除 cookies 時設定更完整的安全性選項
+    const cookieOptions = {
+      maxAge: 0,
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // 在生產環境中使用 HTTPS
+      sameSite: 'strict' as const,
+      domain: process.env.COOKIE_DOMAIN || undefined, // 可設定 cookie domain
+    };
+
+    // 清除所有相關的認證 cookies
+    response.cookies.set('token', '', cookieOptions);
+    response.cookies.set('refreshToken', '', cookieOptions);
+    response.cookies.set('user', '', cookieOptions);
+
+    return response;
+  } catch (error) {
+    console.error('Logout error:', error);
+    return NextResponse.json<LogoutResponse>(
+      { message: 'Logout failed', status: 'error' },
+      { status: 500 }
+    );
+  }
 }

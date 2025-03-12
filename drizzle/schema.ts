@@ -1,4 +1,12 @@
-import { boolean, json, pgTable, serial, text } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  json,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  varchar,
+} from 'drizzle-orm/pg-core';
 
 import { DEVICE, LAYOUT, THEME } from '@/constants';
 
@@ -25,4 +33,13 @@ export const config = pgTable('config', {
         mobile: { theme: 'light', layout: 'B' },
       })
     ),
+});
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  username: varchar('username', { length: 100 }).notNull().unique(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  password: varchar('password', { length: 255 }).notNull(),
+  created_at: timestamp('created_at').defaultNow().notNull(),
+  updated_at: timestamp('updated_at').defaultNow().notNull(),
 });

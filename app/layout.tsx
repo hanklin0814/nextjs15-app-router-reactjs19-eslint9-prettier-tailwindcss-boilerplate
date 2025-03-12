@@ -60,7 +60,8 @@ export default async function RootLayout({
   const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
   // const timeZone = cookieStore.get('NEXT_LOCALE')?.value || 'en';
 
-  console.log('server component', { config, locale });
+  // console.log(cookieStore.get('NEXT_LOCALE'));
+  // console.log('server component', { config, locale });
 
   // 根據 locale 動態載入對應的翻譯檔
   const messages = (await import(`../locales/${locale}.json`)).default;
