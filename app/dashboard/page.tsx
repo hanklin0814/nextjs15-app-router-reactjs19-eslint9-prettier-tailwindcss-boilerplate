@@ -22,12 +22,35 @@ export default function DashboardPage() {
     fetchData();
   }, []);
 
+  const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+    axios.get(
+      'https://fetch-progress.anthum.com/10kbps/images/sunrise-baseline.jpg',
+      {
+        onDownloadProgress: (e) => {
+          if (!e.total) return;
+          const p = Math.round((e.loaded * 100) / e.total);
+
+          setPercentage(p);
+        },
+      }
+    );
+  }, []);
+
   return (
     <div className="p-4">
       <Navigation />
       <Slider />
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <p className="text-lg mb-4">client component 用 axios 拉取資料</p>
+      <div className="w-full bg-gray-500 relative">
+        <div className="relative z-10">圖片下載進度 {`${percentage}%`}</div>
+        <div
+          className={`absolute top-0 left-0 bg-red-500 opacity-50 h-full z-0`}
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
       <div className="space-y-4">
         {posts.map(
           (post: {
