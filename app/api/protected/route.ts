@@ -1,5 +1,9 @@
+import { eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { db } from '@/drizzle/db';
+import { User, users } from '@/drizzle/schema';
 
 // 定義介面
 interface JwtPayload {
@@ -10,7 +14,7 @@ interface JwtPayload {
 
 interface ProtectedResponse {
   message: string;
-  user?: string;
+  user?: User;
   error?: string;
 }
 
@@ -67,11 +71,25 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const findUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, decoded.username));
+
     // 回傳保護的資料
-    return NextResponse.json<ProtectedResponse>({
-      message: 'Successfully authenticated',
-      user: decoded.username,
-    });
+    return NextResponse.json<ProtectedResponse>(
+      {
+        message: 'Successfully authenticated',
+        user: findUser[0],
+      },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'no-store, must-revalidate',
+          Pragma: 'no-cache',
+        },
+      }
+    );
   } catch (error) {
     console.error('Protected route error:', error);
 

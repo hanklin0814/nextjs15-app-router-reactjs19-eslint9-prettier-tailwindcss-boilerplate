@@ -2,8 +2,6 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 
-// import { fetcher } from '@/utils/fetcher';
-
 export default function Login() {
   const [username, setUsername] = useState<string>('user');
   const [password, setPassword] = useState<string>('password');

@@ -2,8 +2,9 @@ import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
+import { checkDatabaseConnection, DEFAULT_CONFIG } from '@/config/getSetting';
 import { getConfig } from '@/config/getSetting';
 import { API } from '@/constants';
 import { Todo, User } from '@/context/CommonContext';
@@ -46,14 +47,32 @@ async function getTodo(): Promise<Todo[]> {
   return await response.json();
 }
 
+async function initializeApp() {
+  const isDbConnected = await checkDatabaseConnection();
+
+  if (!isDbConnected) {
+    console.error('資料庫連線失敗，使用預設配置');
+    // 可以在這裡設置全域狀態或執行其他錯誤處理
+  }
+
+  return {
+    isDbConnected,
+  };
+}
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const users = await getUserList();
-  const todo = await getTodo();
-  const { config } = await getConfig(); // 直連 DB 取得
+  const { isDbConnected } = await initializeApp();
+
+  // 只有在資料庫連線正常時才獲取資料
+  const [users, todo, configData] = await Promise.all([
+    isDbConnected ? getUserList() : [],
+    isDbConnected ? getTodo() : [],
+    isDbConnected ? getConfig() : DEFAULT_CONFIG,
+  ]);
 
   // 從 cookies 中取得使用者語系，若無則預設 'en'
   const cookieStore = await cookies();
@@ -75,8 +94,13 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {!isDbConnected && (
+          <div className="bg-yellow-100 p-2 text-yellow-800">
+            系統目前使用離線模式運作
+          </div>
+        )}
         <Providers
-          webConfig={config as WebConfig}
+          webConfig={configData.config as WebConfig}
           users={users}
           todo={todo}
           locale={locale}

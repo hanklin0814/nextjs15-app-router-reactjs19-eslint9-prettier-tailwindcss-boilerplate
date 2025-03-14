@@ -5,10 +5,11 @@ import { useCallback, useEffect, useState } from 'react';
 
 import Navigation from '@/components/Navigation';
 import Slider from '@/components/Slider';
+import { User } from '@/drizzle/schema';
 
 interface ProtectedData {
   message: string;
-  user?: string;
+  user: User;
 }
 
 export default function ProtectedPage() {
@@ -93,7 +94,8 @@ export default function ProtectedPage() {
       <p className="text-gray-700 bg-yellow-600 mb-2">{data && data.message}</p>
       {data && (
         <p className="text-gray-700 bg-yellow-600">
-          Welcome, <span className="font-semibold">{data.user}</span>
+          Welcome, <span className="font-semibold">{data.user.username}</span>{' '}
+          <span className="font-semibold">{data.user.email}</span>
         </p>
       )}
       <button

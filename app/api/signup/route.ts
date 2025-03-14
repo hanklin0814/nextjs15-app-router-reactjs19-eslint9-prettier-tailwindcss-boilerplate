@@ -3,11 +3,11 @@ import { eq, or } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { db } from '@/drizzle/db';
-import { users } from '@/drizzle/schema';
+import { users, UserWithPassword } from '@/drizzle/schema';
 
 export async function POST(req: NextRequest) {
   try {
-    const { username, email, password } = await req.json();
+    const { username, email, password }: UserWithPassword = await req.json();
 
     // 驗證輸入
     if (!username || !email || !password) {

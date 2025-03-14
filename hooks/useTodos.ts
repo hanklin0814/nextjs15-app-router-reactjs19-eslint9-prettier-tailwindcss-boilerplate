@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { NEXT_API } from '@/constants';
-import { fetcher } from '@/utils/fetcher';
+import { fetcher } from '@/utils/general';
 
 export interface Todo {
   id: number;

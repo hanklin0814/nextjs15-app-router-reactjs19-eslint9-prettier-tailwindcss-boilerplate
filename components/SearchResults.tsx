@@ -1,4 +1,4 @@
-import { fetcher } from '@/utils/fetcher';
+import { fetcher } from '@/utils/general';
 
 interface Post {
   body: string;

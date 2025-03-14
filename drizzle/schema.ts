@@ -1,3 +1,4 @@
+import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import {
   boolean,
   json,
@@ -43,3 +44,20 @@ export const users = pgTable('users', {
   created_at: timestamp('created_at').defaultNow().notNull(),
   updated_at: timestamp('updated_at').defaultNow().notNull(),
 });
+
+// 提取型別定義
+export type Todo = InferSelectModel<typeof todos>;
+export type NewTodo = InferInsertModel<typeof todos>;
+
+export type Setting = InferSelectModel<typeof settings>;
+export type NewSetting = InferInsertModel<typeof settings>;
+
+export type Config = InferSelectModel<typeof config>;
+export type NewConfig = InferInsertModel<typeof config>;
+
+export type User = Omit<InferSelectModel<typeof users>, 'password'>;
+export type UserWithPassword = InferSelectModel<typeof users>;
+export type NewUser = Omit<
+  InferInsertModel<typeof users>,
+  'created_at' | 'updated_at'
+>;
