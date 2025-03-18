@@ -1,13 +1,172 @@
+# Next.js 15 專案樣板
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
-- 安裝套件 `npm install`
-- 執行開發環境 `npm run dev`
-- 打包程式碼 `npm run build`
-- 使用 eslint 檢查程式碼 `npm run lint`
-- 使用 prettier 格式化程式碼 `npm run format`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 專案特色
+- Next.js 15 App Router
+- React 19 
+- TypeScript 5
+- JWT + Cookie 驗證機制
+- 統一錯誤處理
+- Tailwind CSS
+- ESLint 9 + Prettier
+- PostgreSQL in Docker
+
+## 專案架構與說明
+
+### 1. HTTP 請求處理
+位於 `lib/http/` 目錄，採用類別封裝方式處理 HTTP 請求：
+
+```typescript
+lib/http/
+├── classes/
+│   ├── Http.ts        // HTTP 請求類別
+│   └── AppError.ts    // 統一錯誤處理類別
+├── config.ts          // HTTP 配置
+├── instance.ts        // Axios 實例
+└── types.ts          // TypeScript 型別定義
+```
+
+### 2. 錯誤處理機制
+採用統一的錯誤處理方式：
+
+```typescript
+utils/
+├── errorHandler.ts    // 統一錯誤處理
+├── general.ts    // 常見共用函式
+└── showToast.ts      // 錯誤提示
+```
+
+### 3. 驗證機制
+使用 JWT + Cookie 的方式處理驗證：
+
+```typescript
+app/
+├── api/
+│   ├── login/        // 登入 API
+│   ├── logout/       // 登出 API
+│   └── protected/    // 需驗證的 API
+└── auth/
+│   ├── signup/       // 註冊頁面
+    └── login/        // 登入頁面
+```
+
+### 4. 型別定義
+集中管理所有型別定義：
+
+```typescript
+types/
+├── auth.d.ts         // 驗證相關型別
+├── error.d.ts        // 錯誤處理相關型別
+└── api.d.ts          // API 相關型別
+```
+
+## 主要功能說明
+
+### 1. 錯誤處理
+使用統一的 `AppError` 類別處理錯誤：
+
+```typescript
+// 使用方式
+try {
+  // 業務邏輯
+} catch (error) {
+  const errorResponse = handleError(error, {
+    showToast: true,
+    defaultMessage: '操作失敗'
+  });
+}
+```
+
+### 2. API 請求
+提供三種請求實例：
+
+```typescript
+// 一般請求
+http.get('/api/public');
+
+// 需要驗證的請求
+httpWithAuth.get('/api/protected');
+
+// 登入相關請求
+httpAuth.post('/api/login');
+```
+
+### 3. JWT + Cookie 驗證
+- 使用 HTTP-Only Cookie 存放 JWT
+- 自動處理未驗證的情況
+- 支援 Token 過期自動重新整理
+
+## 開發指南
+
+### 環境設定
+1. 建立 `.env` 檔案：
+```env
+DATABASE_URL=postgres://docker:docker@localhost:5432/pg_testdb
+```
+
+2. 建立 `.env.local` 檔案：
+```env
+NODE_ENV=development
+JWT_SECRET=jwt_token_test
+NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_DOMAIN=http://localhost:3000
+
+```
+
+3. 安裝套件
+```bash
+npm install
+```
+
+### 開發流程
+1. 啟動開發伺服器：
+```bash
+npm run dev
+```
+
+2. 建立新的 API：
+- 在 `app/api/` 下建立新的路由
+- 在 `services/api/` 下加入對應的服務
+- 在 `types/` 下定義相關型別
+
+3. 錯誤處理：
+- 使用 `AppError` 建立自定義錯誤
+- 使用 `handleError` 統一處理錯誤
+- 適時顯示錯誤提示
+
+### 測試
+```bash
+npm run test
+```
+
+### 打包程式碼
+```bash
+npm run build
+```
+
+### 使用 eslint 檢查程式碼
+```bash
+npm run lint
+```
+
+### 使用 prettier 格式化程式碼
+```bash
+npm run format
+```
+
+## 注意事項
+1. 所有 API 回應都應遵循統一格式
+2. 錯誤處理應使用統一的錯誤處理機制
+3. 驗證相關的請求應使用 `httpWithAuth`
+4. 配置檔案應放在對應的目錄中
+
+## 常見問題
+Q: 如何處理 401 未驗證錯誤？
+A: 系統會自動導向登入頁面
+
+Q: 如何自定義錯誤處理？
+A: 使用 `createErrorHandler` 建立客製化的錯誤處理器
 
 ## Troubleshooting
 如果遇到奇怪的錯誤，可嘗試以下幾點做法：
@@ -113,13 +272,26 @@ NEXT
 │ └── toast.ts
 │
 ├── hooks/ // 自定義 React hooks
+│ ├── api/ // API 相關
+│ │  ├── useRequest.ts // 通用請求 hook
+│ │  ├── useLazyRequest.ts // 延遲請求 hook
+│ │  └── index.ts
 │ ├── useAuth.ts
 │ ├── useDebounce.ts
 │ ├── useDebounceFn.ts
-│ ├── useToast.ts
 │ └── useTodos.ts
 │
 ├── lib/ // 與外部服務或後端邏輯相關的功能封裝
+│ ├── http/ // HTTP 請求相關封裝
+│ │  ├── classes/
+│ │  │  ├── Http.ts // HTTP 請求類別
+│ │  │  └── HttpError.ts // HTTP 錯誤處理類別
+│ │  ├── config.ts // HTTP 設定 (BASE_URL, TIME_OUT 等)
+│ │  ├── handler.ts // HTTP 請求處理器
+│ │  ├── instance.ts // axios 實例配置
+│ │  ├── types.ts // HTTP 相關型別定義
+│ │  └── index.ts // HTTP 模組導出
+│ │
 │ ├── api.ts // API 請求封裝
 │ ├── db.ts // 資料庫連線與操作
 │ └── authClient.ts // 驗證相關客戶端邏輯
@@ -137,15 +309,20 @@ NEXT
 ├── pgadmin/ // pgAdmin 設定檔
 │ └── pgdb_servers.json //用途是給 pgAdmin docker 啟動時設置環境用
 │
-├── services/ // 業務邏輯服務層 (封裝用戶、產品等相關操作)
-│ ├── userService.ts
-│ └── productService.ts
+├── services/ // 業務邏輯服務層
+│ ├── api/ // API 服務
+│ │  ├── auth.ts // 驗證相關 API
+│ │  ├── user.ts // 用戶相關 API
+│ │  ├── department.ts // 部門相關 API
+│ │  └── index.ts
+│ └── index.ts
 │
 ├── sql/ // Docker 初始化 SQL 腳本 (自動建立資料庫與表格)
 │ └── initdb.sql //這用檔案的用途是給 postgres docker 啟動時透過 volumn 指令掛戴將此 SQL 檔案映射到 docker 內的 /docker-entrypoint-initdb.d/init.sql 檔，使得 docker initial 時會自動建立一個名為 pg_testdb 的資料庫
 │
 ├── styles/ // 全局樣式 (CSS、SCSS 或 Tailwind CSS)
-│ └── globals.css
+│ ├── globals.css
+│ └── nprogress.css
 │
 ├── tests/ // 測試檔案資料夾 (Jest 與 React Testing Library)
 │ ├── app/ // 與 app 相關的測試
@@ -166,8 +343,8 @@ NEXT
 │ └── product.d.ts
 │
 ├── utils/ // 工具函數與輔助程式
-│ ├── fetcher.ts //抽離 fetch 請求為通用函數，確保錯誤處理一致
-│ └── general.ts //常用共用的輔助程式
+│ ├── general.ts //常用共用的輔助程式
+│ └── showToast.ts //共用的通知
 │
 ├── .env // 環境變數設定檔
 ├── docker-compose.yml // Docker Compose 設定檔 (啟動 PostgreSQL 與 pgAdmin)

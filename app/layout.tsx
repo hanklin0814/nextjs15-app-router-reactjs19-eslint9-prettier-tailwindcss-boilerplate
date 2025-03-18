@@ -1,8 +1,9 @@
 import '@/styles/globals.css';
+import '@/styles/nprogress.css';
 
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 import { checkDatabaseConnection, DEFAULT_CONFIG } from '@/config/getSetting';
 import { getConfig } from '@/config/getSetting';
