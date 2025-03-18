@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 
+import { handleError } from '@/lib/http/classes/AppError';
+import { signup } from '@/services/api';
+
 export default function Signup() {
   const [formData, setFormData] = useState({
     username: '',
@@ -24,25 +27,21 @@ export default function Signup() {
     }
 
     try {
-      const res = await fetch('/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        }),
+      const response = await signup({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
       });
 
-      const data = await res.json();
-
-      if (res.ok) {
-        router.push('/login?message=signup-success');
+      if (response.success) {
+        router.push('/auth/login?message=signup-success');
       } else {
-        setError(data.error || '註冊失敗');
+        setError(response.message || '註冊失敗');
       }
-    } catch (err) {
-      setError('註冊過程中發生錯誤');
+    } catch (error) {
+      // 使用統一的錯誤處理
+      const errorResponse = handleError(error);
+      setError(errorResponse.message);
     }
   };
 
@@ -104,7 +103,11 @@ export default function Signup() {
               required
             />
           </div>
-          {error && <p className="mb-4 text-red-500">{error}</p>}
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              <p className="text-sm">{error}</p>
+            </div>
+          )}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
@@ -113,7 +116,10 @@ export default function Signup() {
           </button>
           <p className="mt-4 text-center text-gray-600">
             已經有帳號？{' '}
-            <Link href="/login" className="text-blue-500 hover:text-blue-600">
+            <Link
+              href="/auth/login"
+              className="text-blue-500 hover:text-blue-600"
+            >
               登入
             </Link>
           </p>

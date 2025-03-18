@@ -1,4 +1,4 @@
-import { EnumValues } from './constants';
+import { EnumValues } from './';
 
 // 使用 enum 應用情場
 // - 適合大型專案中需要明確列舉概念、需要反向映射或需要自動生成列舉對象的情況。

@@ -1,24 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-interface LogoutResponse {
-  message: string;
-  status?: string;
-}
+import { AppError } from '@/lib/http/classes/AppError';
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
     // 檢查請求方法
-    if (request.method !== 'POST') {
-      return NextResponse.json(
-        { message: 'Method Not Allowed' },
-        { status: 405 }
-      );
+    if (request.method !== 'GET') {
+      throw new AppError('HTTP', 'Method Not Allowed', 405);
     }
 
-    const response = NextResponse.json<LogoutResponse>({
+    const response = {
+      success: true,
       message: 'Logout successful',
-      status: 'success',
-    });
+    };
 
     // 清除 cookies 時設定更完整的安全性選項
     const cookieOptions = {
@@ -31,16 +25,14 @@ export async function POST(request: NextRequest) {
     };
 
     // 清除所有相關的認證 cookies
-    response.cookies.set('token', '', cookieOptions);
-    response.cookies.set('refreshToken', '', cookieOptions);
-    response.cookies.set('user', '', cookieOptions);
+    const jsonResponse = NextResponse.json(response);
+    jsonResponse.cookies.set('token', '', cookieOptions);
+    jsonResponse.cookies.set('refreshToken', '', cookieOptions);
+    jsonResponse.cookies.set('user', '', cookieOptions);
 
-    return response;
+    return jsonResponse;
   } catch (error) {
     console.error('Logout error:', error);
-    return NextResponse.json<LogoutResponse>(
-      { message: 'Logout failed', status: 'error' },
-      { status: 500 }
-    );
+    throw new AppError('UNKNOWN', 'Logout failed');
   }
 }

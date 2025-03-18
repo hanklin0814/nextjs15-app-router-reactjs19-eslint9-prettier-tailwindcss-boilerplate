@@ -1,4 +1,4 @@
-import { EnumValues } from './constants';
+import { EnumValues } from './';
 
 export const THEME = {
   DARK: 'dark',

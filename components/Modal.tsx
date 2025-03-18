@@ -10,11 +10,10 @@ import { RiAlarmWarningFill } from 'react-icons/ri';
 
 import { useModal } from '@/context/ModalContext';
 import { Toast } from '@/enums';
-import { useToast } from '@/hooks/useToast';
+import showToast from '@/utils/showToast';
 
 export default function Modal() {
   const { open, closeModal } = useModal();
-  const showToast = useToast();
   const t = useTranslations();
 
   return (

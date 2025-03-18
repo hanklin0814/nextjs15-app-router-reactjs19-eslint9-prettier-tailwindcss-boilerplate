@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from 'react';
 
+import { login } from '@/services/api';
+
 export default function Login() {
   const [username, setUsername] = useState<string>('user');
   const [password, setPassword] = useState<string>('password');
@@ -13,26 +15,21 @@ export default function Login() {
     e.preventDefault();
 
     if (isSubmittingRef.current) return; // 防止重複提交
-
     isSubmittingRef.current = true;
     setError('');
 
     try {
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await login({ username, password });
 
-      if (res.ok) {
+      if (response.success) {
         // 使用 replace 而不是 push 來避免瀏覽歷史堆疊
-        router.replace('/protected');
+        router.replace('/');
       } else {
-        const data = await res.json();
-        setError(data.message || 'Login failed');
+        setError(response.message || '登入失敗');
       }
-    } catch (err) {
-      setError('登入時發生錯誤');
+    } catch (error) {
+      console.error(error);
+      setError('登入時發生錯誤，請稍後再試');
     } finally {
       isSubmittingRef.current = false;
     }
@@ -72,13 +69,6 @@ export default function Login() {
           >
             Login
           </button>
-
-          {/* <button
-            onClick={handleLogout}
-            className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors"
-          >
-            Logout
-          </button> */}
         </form>
       </div>
     </div>
